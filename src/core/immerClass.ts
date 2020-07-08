@@ -27,6 +27,7 @@ import {
 	freeze,
 	current
 } from "../internal"
+import {enableES5} from "../plugins/es5"
 
 interface ProducersFns {
 	produce: IProduce
@@ -39,6 +40,10 @@ export class Immer implements ProducersFns {
 	autoFreeze_: boolean = __DEV__ ? true /* istanbul ignore next */ : !isMinified
 
 	constructor(config?: {useProxies?: boolean; autoFreeze?: boolean}) {
+		//@ts-ignore
+		if (typeof window !== "undefined" && (window as any).msCrypto) {
+			enableES5()
+		}
 		if (typeof config?.useProxies === "boolean")
 			this.setUseProxies(config!.useProxies)
 		if (typeof config?.autoFreeze === "boolean")
