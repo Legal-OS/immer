@@ -5,6 +5,7 @@ import {
 	Draft,
 	Immutable
 } from "./internal"
+import {enableES5} from "./plugins/es5"
 
 export {
 	Draft,
@@ -20,7 +21,10 @@ export {
 } from "./internal"
 
 const immer = new Immer()
-
+//@ts-ignore
+if (typeof window !== "undefined" && (window as any).msCrypto) {
+	enableES5()
+}
 /**
  * The `produce` function takes a value and a "recipe function" (whose
  * return value often depends on the base state). The recipe function is
